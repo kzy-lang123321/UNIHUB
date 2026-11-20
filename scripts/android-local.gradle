@@ -1,0 +1,40 @@
+// Keep local builds on the same Android plugin as the installed RN toolchain.
+// Some libraries declare older standalone-build plugins that are unnecessary
+// when they are included in this application.
+def versionFile = new File(rootDir.parentFile, 'node_modules/@react-native/gradle-plugin/gradle/libs.versions.toml')
+def versionMatch = versionFile.text =~ /(?m)^agp\s*=\s*"([^"]+)"/
+if (!versionMatch.find()) throw new GradleException('Cannot determine the React Native Android plugin version')
+def applicationAgp = versionMatch.group(1)
+rootProject.ext.buildToolsVersion = '36.0.0'
+
+subprojects { child ->
+    child.tasks.configureEach { task ->
+        if (task.name == 'createBundleReleaseJsAndAssets') {
+            // Expo substitutes these values into JS; Gradle must invalidate old bundles.
+            task.inputs.file(new File(rootDir.parentFile, '.env')).optional()
+            task.extraPackagerArgs.addAll(['--max-workers', '2'])
+        }
+    }
+    child.buildscript.configurations.configureEach { configuration ->
+        configuration.resolutionStrategy.eachDependency { dependency ->
+            if (dependency.requested.group == 'com.android.tools.build' && dependency.requested.name == 'gradle') {
+                dependency.useVersion(applicationAgp)
+                dependency.because('Use the Android plugin already loaded by the application')
+            }
+        }
+    }
+    child.afterEvaluate {
+        if (child.plugins.hasPlugin('com.android.application') || child.plugins.hasPlugin('com.android.library')) {
+            child.android.buildToolsVersion = '36.0.0'
+            // Limit native compiler memory on this 8 GB Windows build machine.
+            child.android.defaultConfig.externalNativeBuild.cmake.arguments.addAll([
+                // CMake uses an 8.3 compiler filename on Windows paths with spaces.
+                // That basename hides clang++'s C++ driver mode; keep it explicit.
+                '-DCMAKE_CXX_FLAGS=--driver-mode=g++',
+                '-DCMAKE_JOB_POOLS=unihub_compile=1;unihub_link=1',
+                '-DCMAKE_JOB_POOL_COMPILE=unihub_compile',
+                '-DCMAKE_JOB_POOL_LINK=unihub_link'
+            ])
+        }
+    }
+}

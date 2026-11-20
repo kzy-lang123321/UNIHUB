@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "UniHub",
+    "slug": "unihub",
+    "scheme": "unihub",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-router",
+      "expo-local-authentication",
+      "expo-document-picker",
+      "./plugins/withLocalLibrary.cjs"
+    ],
+    "android": { "package": "app.unihub.mobile" },
+    "ios": { "bundleIdentifier": "app.unihub.mobile", "supportsTablet": true },
+    "experiments": { "typedRoutes": true }
+  }
+}

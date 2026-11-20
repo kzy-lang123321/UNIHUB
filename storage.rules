@@ -1,0 +1,11 @@
+rules_version = '2';
+service firebase.storage {
+ match /b/{bucket}/o {
+  function profile() { return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data; }
+  function course(code) { return firestore.get(/databases/(default)/documents/courses/$(code)).data; }
+  match /institutions/{inst}/courses/{code}/{file} {
+   allow read: if request.auth != null && profile().mustChangePassword == false && profile().institutionId == inst && course(code).institutionId == inst && (course(code).published || profile().role == 'admin' || request.auth.uid in course(code).teacherIds);
+   allow write: if request.auth != null && profile().mustChangePassword == false && profile().institutionId == inst && course(code).institutionId == inst && (profile().role == 'admin' || (profile().role == 'teacher' && request.auth.uid in course(code).teacherIds)) && request.resource.size < 10 * 1024 * 1024 && request.resource.contentType == 'application/pdf';
+  }
+ }
+}

@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function signed() { return request.auth != null; }
+  function profile() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+  function ready() { return signed() && profile().mustChangePassword == false; }
+  function admin() { return ready() && profile().role == 'admin'; }
+  function same(inst) { return ready() && profile().institutionId == inst; }
+  match /users/{uid} {
+   allow read: if signed() && (uid == request.auth.uid || (admin() && resource.data.institutionId == profile().institutionId));
+   allow update: if signed() && uid == request.auth.uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['mustChangePassword']) && request.resource.data.mustChangePassword == false;
+   allow create, delete: if false;
+  }
+  match /institutions/{id} { allow read: if same(id); allow write: if admin() && id == profile().institutionId; }
+  match /programs/{id} { allow read: if same(resource.data.institutionId); allow create: if admin() && same(request.resource.data.institutionId); allow update: if admin() && same(resource.data.institutionId) && request.resource.data.institutionId == resource.data.institutionId; allow delete: if admin() && same(resource.data.institutionId); }
+  match /courses/{code} {
+   allow read: if same(resource.data.institutionId) && (resource.data.published == true || profile().role == 'admin' || (profile().role == 'teacher' && request.auth.uid in resource.data.teacherIds));
+   allow create: if admin() && same(request.resource.data.institutionId);
+   allow update: if same(resource.data.institutionId) && request.resource.data.institutionId == resource.data.institutionId && (admin() || (profile().role == 'teacher' && request.auth.uid in resource.data.teacherIds && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['units','papers','published','creditLine','outline'])));
+   allow delete: if admin() && same(resource.data.institutionId);
+  }
+  match /progress/{uid}/courses/{code} { allow read, write: if ready() && uid == request.auth.uid; }
+  match /academicMaterials/{id} {
+   allow read: if same(resource.data.institutionId) && (admin() || (resource.data.published == true && resource.data.deleted == false && resource.data.classificationConfirmed == true && resource.data.visibilityConfirmed == true && resource.data.programId == profile().programId && resource.data.semester == profile().semester));
+   allow create: if admin() && same(request.resource.data.institutionId);
+   allow update: if admin() && same(resource.data.institutionId) && request.resource.data.institutionId == resource.data.institutionId;
+   allow delete: if false;
+  }
+ }
+}
