@@ -195,7 +195,6 @@ export default function Library() {
               Browse all materials →
             </Text>
           </Pressable>
-        </View>
         <Text style={{ color: c.text, fontWeight: "700", fontSize: 18 }}>
           Browse by type
         </Text>

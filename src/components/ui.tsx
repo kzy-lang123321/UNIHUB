@@ -123,8 +123,44 @@ export function Button({
     </Pressable>
   );
 }
-export function Field(props: TextInputProps) {
+export type FieldProps = TextInputProps & {
+  label?: string;
+  children?: React.ReactNode;
+};
+
+export function Field({ label, children, ...props }: FieldProps) {
   const c = useColors();
+  if (children || label) {
+    return (
+      <View style={{ gap: 6 }}>
+        {label ? (
+          <Text style={{ color: c.muted, fontSize: 13, fontWeight: "600" }}>
+            {label}
+          </Text>
+        ) : null}
+        {children || (
+          <TextInput
+            placeholderTextColor={c.muted}
+            {...props}
+            style={[
+              {
+                backgroundColor: c.card,
+                color: c.text,
+                borderWidth: 1,
+                borderColor: c.border,
+                borderRadius: 12,
+                minHeight: 50,
+                padding: 14,
+                fontSize: 15,
+              },
+              props.style,
+            ]}
+          />
+        )}
+      </View>
+    );
+  }
+
   return (
     <TextInput
       placeholderTextColor={c.muted}
