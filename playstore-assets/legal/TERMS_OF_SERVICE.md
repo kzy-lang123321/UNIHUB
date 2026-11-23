@@ -1,7 +1,7 @@
 # Terms of Service for UniHub
 
 **Effective Date:** November 23, 2026  
-**Application:** UniHub (`app.unihub.mobile`)
+**Application:** UniHub (`com.megatech.unihub`)
 
 ---
 
@@ -37,3 +37,4 @@ UniHub is provided on an "as-is" and "as-available" basis. While we strive to ma
 ## 8. Contact
 UniHub Team  
 Email: `khanabbasi5642@gmail.com`
+

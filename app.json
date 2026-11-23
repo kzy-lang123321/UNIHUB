@@ -13,8 +13,8 @@
       "expo-document-picker",
       "./plugins/withLocalLibrary.cjs"
     ],
-    "android": { "package": "app.unihub.mobile" },
-    "ios": { "bundleIdentifier": "app.unihub.mobile", "supportsTablet": true },
+    "android": { "package": "com.megatech.unihub" },
+    "ios": { "bundleIdentifier": "com.megatech.unihub", "supportsTablet": true },
     "experiments": { "typedRoutes": true }
   }
 }

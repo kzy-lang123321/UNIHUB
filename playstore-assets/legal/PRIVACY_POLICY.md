@@ -3,7 +3,7 @@
 **Effective Date:** November 23, 2026  
 **Last Updated:** November 23, 2026  
 **Developer / Owner:** UniHub Team (`khanabbasi5642@gmail.com`)  
-**Application:** UniHub (Package: `app.unihub.mobile`)
+**Application:** UniHub (Package: `com.megatech.unihub`)
 
 ---
 
@@ -81,3 +81,4 @@ If you have any questions, concerns, or requests regarding this Privacy Policy, 
 * **Developer Name:** UniHub Team (MEGA-TECH)
 * **Email:** `khanabbasi5642@gmail.com`
 * **Address:** Islamabad, Pakistan
+
