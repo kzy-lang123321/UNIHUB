@@ -87,6 +87,44 @@ export default function Me() {
           </Text>
         </View>
       </Row>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="View and edit your profile"
+        onPress={() => router.push("/(student)/profile")}
+      >
+        <Card accent>
+          <Row>
+            <View style={{ gap: 4, flex: 1 }}>
+              <Label muted size={11}>
+                STUDENT PROFILE & COMMUNITY
+              </Label>
+              <Text style={{ color: c.text, fontSize: 18, fontWeight: "700" }}>
+                {p.displayName}
+              </Text>
+              <Label muted size={13}>
+                {p.username ? `@${p.username} · ` : ""}Semester {p.semester} · {p.programId.toUpperCase()}
+              </Label>
+              <Text style={{ color: c.accent, fontSize: 13, fontWeight: "600", marginTop: 4 }}>
+                View & Edit Profile →
+              </Text>
+            </View>
+            <View
+              style={{
+                width: 54,
+                height: 54,
+                borderRadius: 27,
+                backgroundColor: c.accent,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ color: "#FFFFFF", fontSize: 24, fontWeight: "700" }}>
+                {p.displayName.charAt(0)}
+              </Text>
+            </View>
+          </Row>
+        </Card>
+      </Pressable>
       <Row>
         <View style={{ flex: 1 }}>
           <Card>
@@ -104,6 +142,11 @@ export default function Me() {
       <Button
         title="Keep learning →"
         onPress={() => router.push("/(student)")}
+      />
+      <Button
+        secondary
+        title="Community Book Library 📚"
+        onPress={() => router.push("/(student)/community")}
       />
       <Button
         secondary

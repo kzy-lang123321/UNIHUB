@@ -141,6 +141,50 @@ export default function Library() {
           <Text style={{ color: c.muted, lineHeight: 22 }}>
             Your college’s approved books, lecture notes and original documents.
           </Text>
+        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Open Community Book Library"
+          onPress={() => router.push("/(student)/community")}
+          style={{
+            padding: 18,
+            borderRadius: 18,
+            backgroundColor: c.card,
+            borderWidth: 1,
+            borderColor: c.border,
+            gap: 10,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 12,
+                flex: 1,
+              }}
+            >
+              <Text style={{ fontSize: 26 }}>📚</Text>
+              <View style={{ flex: 1, gap: 2 }}>
+                <Text style={{ color: c.text, fontSize: 16, fontWeight: "700" }}>
+                  Community Book Library
+                </Text>
+                <Text style={{ color: c.muted, fontSize: 13 }}>
+                  Contribute & explore peer-reviewed books & study notes
+                </Text>
+              </View>
+            </View>
+            <Text style={{ color: c.accent, fontWeight: "700", fontSize: 14 }}>
+              Open →
+            </Text>
+          </View>
+        </Pressable>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Books & notes · Browse or search files"

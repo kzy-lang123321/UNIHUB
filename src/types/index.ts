@@ -3,10 +3,29 @@ export interface Profile {
   uid: string;
   role: Role;
   institutionId: string;
+  institutionName?: string;
   programId: string;
   semester: number;
   displayName: string;
+  username?: string;
+  bio?: string;
+  avatarUrl?: string;
+  bannerUrl?: string;
+  email?: string;
+  phone?: string;
+  fieldOfStudy?: string;
+  degreeLevel?: string;
+  interests?: string[];
+  website?: string;
+  socialLinks?: {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+  };
+  isProfilePublic?: boolean;
   mustChangePassword?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 export interface Book {
   title: string;
