@@ -19,7 +19,7 @@ import {
 import { configured } from "../../src/services/firebase";
 import { useStore } from "../../src/store";
 export default function Login() {
-  return authenticationEnabled ? <InstitutionLogin /> : <Redirect href="/" />;
+  return <InstitutionLogin />;
 }
 
 function InstitutionLogin() {

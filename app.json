@@ -3,7 +3,7 @@
     "name": "UniHub",
     "slug": "unihub",
     "scheme": "unihub",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
       "expo-document-picker",
       "./plugins/withLocalLibrary.cjs"
     ],
-    "android": { "package": "com.megatech.unihub", "versionCode": 2 },
+    "android": { "package": "com.megatech.unihub", "versionCode": 3 },
     "ios": { "bundleIdentifier": "com.megatech.unihub", "supportsTablet": true },
     "experiments": { "typedRoutes": true }
   }

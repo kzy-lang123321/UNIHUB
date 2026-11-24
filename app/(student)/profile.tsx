@@ -261,11 +261,19 @@ export default function UserProfileScreen() {
               </View>
             )}
 
-            <Button
-              secondary
-              title="Edit Profile ✏️"
-              onPress={() => setShowEditModal(true)}
-            />
+            <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+              <Button
+                secondary
+                title="Edit Profile ✏️"
+                onPress={() => setShowEditModal(true)}
+              />
+              {profile.uid === "demo" ? (
+                <Button
+                  title="Sign In 🔐"
+                  onPress={() => router.push("/(auth)/login")}
+                />
+              ) : null}
+            </View>
           </View>
 
           {/* Identity */}

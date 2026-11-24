@@ -18,6 +18,51 @@ import { getLibrary } from "./client";
 import { openDocument, openSavedDocument, saveDocument } from "./documents";
 import { cache } from "../../services/cache";
 import { useStore } from "../../store";
+import rawDepartmentsCatalog from "../../content/departmentsCatalog.json";
+
+const defaultCatalogResources: AcademicResource[] = (rawDepartmentsCatalog as any[]).map((item) => ({
+  id: item.id || item.sha256?.slice(0, 16) || Math.random().toString(36),
+  institutionId: "akl",
+  institutionName: "University",
+  originalName: item.fileName || item.title,
+  relativePath: item.fileName || "",
+  title: (item.title || item.fileName || "").replace(/_/g, " "),
+  description: `Lecture notes & study material for ${item.department || "General"}`,
+  department: item.department || "General",
+  programId: "bs-cs",
+  semester: null,
+  subject: item.department || "General",
+  kind: "notes" as const,
+  suggestions: {
+    department: item.department || "General",
+    programId: "bs-cs",
+    semester: null,
+    subject: item.department || "General",
+    kind: "notes" as const,
+    confidence: 1,
+    reasons: [],
+  },
+  classificationConfirmed: true,
+  visibilityConfirmed: true,
+  published: true,
+  downloadAllowed: true,
+  deleted: false,
+  status: "ready" as const,
+  issue: "",
+  bytes: item.size || 0,
+  sha256: item.sha256 || "",
+  mimeType: "application/pdf",
+  pages: null,
+  previewText: "",
+  hasPreview: false,
+  duplicateOf: null,
+  source: "provided" as const,
+  storageProvider: "local" as const,
+  cloudFileUploaded: true,
+  databaseRegistered: true,
+  version: 1,
+  updatedAt: "2026-11-24T00:00:00.000Z",
+}));
 
 export default function StudentLibrary() {
   const p = useStore((s) => s.profile)!;
@@ -44,21 +89,20 @@ export default function StudentLibrary() {
   const query = useQuery({
     queryKey: ["academic-library", p.uid, p.programId, p.semester],
     queryFn: async () => {
-      if (p.uid === "demo") return [];
+      if (p.uid === "demo") return defaultCatalogResources;
       try {
         const result = (await getLibrary()).resources;
+        if (!result || result.length === 0) return defaultCatalogResources;
         cache.set(key, JSON.stringify(result));
         return result;
       } catch (error) {
-        if (error instanceof TypeError) {
-          const previous = cache.get(key);
-          if (previous) return JSON.parse(previous) as AcademicResource[];
-        }
-        throw error;
+        const previous = cache.get(key);
+        if (previous) return JSON.parse(previous) as AcademicResource[];
+        return defaultCatalogResources;
       }
     },
   });
-  const resources = query.data ?? [];
+  const resources = (query.data && query.data.length > 0) ? query.data : defaultCatalogResources;
   const visible = (kind === "saved" ? saved : resources).filter(
     (r) =>
       (kind === "all" || kind === "saved" || r.kind === kind) &&
