@@ -13,8 +13,16 @@
       "expo-document-picker",
       "./plugins/withLocalLibrary.cjs"
     ],
+    "icon": "./assets/icon.png",
     "android": { "package": "com.megatech.unihub", "versionCode": 3 },
-    "ios": { "bundleIdentifier": "com.megatech.unihub", "supportsTablet": true },
+    "ios": {
+      "bundleIdentifier": "com.megatech.unihub",
+      "buildNumber": "3",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Allow UniHub to use Face ID for secure student biometric access."
+      }
+    },
     "experiments": { "typedRoutes": true }
   }
 }
